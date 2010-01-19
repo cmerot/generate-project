@@ -1,0 +1,17 @@
+<VirtualHost *>
+  ServerAdmin webmaster@portac
+  ServerName <%=apache_server_name%> 
+  <% apache_server_aliases_array.each do |a| %> 
+  ServerAlias <%= "#{a}" %> 
+  <% end %> 
+  DocumentRoot <%= "#{current_path}/htdocs" %> 
+  <Directory <%= "#{current_path}/htdocs" %>>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    allow from all
+  </Directory>
+  LogLevel warn
+  ErrorLog <%= "#{shared_path}/log/apache2/error.log" %> 
+  CustomLog <%= "#{shared_path}/log/apache2/access.log common" %>
+</VirtualHost>
