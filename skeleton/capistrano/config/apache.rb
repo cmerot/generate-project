@@ -24,8 +24,8 @@ namespace :apache do
     
     send(run_method, "cp #{shared_path}/httpd.conf #{apache_vhost_aconf}")
     send(run_method, "rm -f #{shared_path}/httpd.conf")
+
     send(run_method, "ln -nfs #{apache_vhost_aconf} #{apache_vhost_econf}")
-    
     apache.restart
     
   end

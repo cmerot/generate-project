@@ -8,6 +8,10 @@ This script creates an empty web project where code is:
 * deployed by Capistrano,
 * and served by Apache.
 
+on the same (developpment) server.
+
+**This will change, but for now the Apache vhost is copied to /etc/apache2/sites-available, linked from sites-enabled, and Apache restarted. This can mess up your server.**
+
 ## Installation and requirements
 
 You will need:
