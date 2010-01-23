@@ -10,7 +10,7 @@ set :vhost_template, "apache.conf.erb"
 namespace :apache do
   desc "Configure Apache from template"
   task :setup, :roles => [:web] do
-    set :apache_vhost_aconf, "/etc/apache2/sites-available/#{application}"
+    set :apache_vhost_aconf, "#{projects_dir}/#{application}/apache.conf"
     set :apache_vhost_econf, "/etc/apache2/sites-enabled/#{application}"
     set :apache_server_aliases_array, server_aliases
     server_aliases.concat apache_server_aliases
