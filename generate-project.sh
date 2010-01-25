@@ -21,7 +21,7 @@ fi
 
 # Replace `.` by `-` in project name
 _project_name=`echo $1 | sed 's/\./-/g'`
-_project_host=$1
+_project_host=$1.`hostname -f`
 
 _project_dir="${_projects_dir}/${_project_name}"
 # We check if the project folder does not exist already
