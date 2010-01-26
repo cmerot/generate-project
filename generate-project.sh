@@ -50,6 +50,10 @@ sed -e "s/\[PROJECT_NAME\]/${_project_name}/g" -e "s/\[PROJECT_HOST\]/${_project
 rm $_deploy_rb
 mv ${_deploy_rb}.new $_deploy_rb
 
+
+# Skip first deployment, better to do it manually
+exit
+
 # Capistrano setup
 cd $_project_dir/capistrano
 cap deploy:setup
