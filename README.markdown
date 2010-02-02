@@ -2,15 +2,23 @@
 
 ## Introduction
 
-This script creates an empty web project where code is:
+This script creates an empty web project where code is aimed to be:
 
 * under Git version control, 
-* deployed by Capistrano,
+* deployed by Capistrano (on one or more developpement servers),
 * and served by Apache.
 
-on the same (developpment) server.
+It's quite specific to my needs, even if my needs are quite common for a LAMP developper.
+As of now I use in a developpement environnement, with a set of virtual LAMP servers: 
+A main server stores full projects (deployment scripts, git repos) and can deploy  fully functionnal
+working copies, to itself or other virtual servers.
 
-**This will change, but for now the Apache vhost is copied to /etc/apache2/sites-available, linked from sites-enabled, and Apache restarted. This can mess up your server.**
+
+I have no experience in Ruby, Capistrano, bash, this project is a way for me to discover all those
+things. I'd say:
+> I didn't know I didn't know, now I know I don't know.
+
+
 
 ## Installation and requirements
 
@@ -27,8 +35,8 @@ Download the source:
 Adapt generate-project/generate-project.sh to your needs:
 
     # Paths
-    _skeleton_dir="/space/admin/generate-project/skeleton"
-    _projects_dir="/space/projects"
+    skeleton_dir="/space/admin/generate-project/skeleton"
+    projects_dir="/space/projects"
 
 ## Usage
 
@@ -36,21 +44,21 @@ Adapt generate-project/generate-project.sh to your needs:
 
 To create an empty project with a Git repository deployed with Capistrano, use: 
 
-    $ generate-project/generate-project.sh blogs.localhost
+    $ generate-project/generate-project.sh blogs
 
 Everything is now in place, the capistrano tasks "deploy:setup" and "deploy"
 have just been executed. 
 
 How your project looks like:
 
-    $ cd /space/projects/blogs-localhost
+    $ cd /space/projects/blogs
     $ ls -al
     total 24
     drwxrwxr-x 6 webdev webdev 4096 jan 19 14:34 .
     drwxr-xr-x 3 root   root   4096 jan 19 14:34 ..
-    drwxr-xr-x 7 root   root   4096 jan 19 14:34 blogs-localhost.git
+    drwxr-xr-x 7 root   root   4096 jan 19 14:34 blogs.git
     drwxr-xr-x 4 webdev webdev 4096 jan 19 14:34 capistrano
-    lrwxrwxrwx 1 root   root     55 jan 19 14:34 current -> /space/projects/blogs-localhost/releases/20100119133402
+    lrwxrwxrwx 1 root   root     55 jan 19 14:34 current -> /space/projects/blogs/releases/20100119133402
     drwxrwxr-x 3 root   root   4096 jan 19 14:34 releases
     drwxrwxr-x 5 root   root   4096 jan 19 14:34 shared
 
@@ -58,7 +66,7 @@ How your project looks like:
 
 A git status gives:
 
-    $ cd /space/projects/blogs-localhost/current
+    $ cd /space/projects/blogs/current
     $ git status
     # On branch master
     # Untracked files:
@@ -79,7 +87,7 @@ Now let's try a commit:
     Compressing objects: 100% (2/2), done.
     Writing objects: 100% (4/4), 355 bytes, done.
     Total 4 (delta 0), reused 0 (delta 0)
-    To ssh://localhost/space/projects/blogs-localhost/blogs-localhost.git
+    To ssh://localhost/space/projects/blogs/blogs.git
        0de2dcf..2875b37  master -> master
 
 ### Deploy with Capistrano
@@ -127,18 +135,18 @@ Deploy your code:
      * executing `deploy'  * executing `deploy:update'
     ** transaction: start
      * executing `deploy:update_code'
-       executing locally: "git ls-remote ssh://localhost/space/projects/blogs-localhost/blogs-localhost.git master"
-     * executing "git clone -q ssh://localhost/space/projects/blogs-localhost/blogs-localhost.git /space/projects/blogs-localhost/releases/20100119142116 && cd /space/projects/blogs-localhost/releases/20100119142116 && git checkout -q -b deploy 2875b37c408193953702e47fae79a7e6d7545810 && (echo 2875b37c408193953702e47fae79a7e6d7545810 > /space/projects/blogs-localhost/releases/20100119142116/REVISION)"
+       executing locally: "git ls-remote ssh://localhost/space/projects/blogs/blogs.git master"
+     * executing "git clone -q ssh://localhost/space/projects/blogs/blogs.git /space/projects/blogs/releases/20100119142116 && cd /space/projects/blogs/releases/20100119142116 && git checkout -q -b deploy 2875b37c408193953702e47fae79a7e6d7545810 && (echo 2875b37c408193953702e47fae79a7e6d7545810 > /space/projects/blogs/releases/20100119142116/REVISION)"
        servers: ["localhost"]
        [localhost] executing command
        command finished
      * executing `deploy:finalize_update'
-     * executing "chmod -R g+w /space/projects/blogs-localhost/releases/20100119142116"
+     * executing "chmod -R g+w /space/projects/blogs/releases/20100119142116"
        servers: ["localhost"]
        [localhost] executing command
        command finished
      * executing `deploy:symlink'
-     * executing "rm -f /space/projects/blogs-localhost/current && ln -s /space/projects/blogs-localhost/releases/20100119142116 /space/projects/blogs-localhost/current"
+     * executing "rm -f /space/projects/blogs/current && ln -s /space/projects/blogs/releases/20100119142116 /space/projects/blogs/current"
        servers: ["localhost"]
        [localhost] executing command
        command finished

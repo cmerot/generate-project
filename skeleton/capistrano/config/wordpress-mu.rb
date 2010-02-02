@@ -4,9 +4,9 @@ set :app_symlinks, ["wp-content/avatars","wp-content/blogs.dir","wp-content/cach
 set :wp_config_template, "wp-config.php.erb"
 
 # WORDPRESS DB
-set :wp_db_name, "blogs_dev_vm_portac"
-set :wp_db_user, "webdev"
-set :wp_db_password, "webdev"
+set :wp_db_name, "db_name"
+set :wp_db_user, "db_user"
+set :wp_db_password, "db_password"
 set :wp_db_host, "localhost"
 set :wp_db_charset, "utf8"
 

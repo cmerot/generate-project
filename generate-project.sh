@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Paths
-_skeleton_dir="/space/admin/generate-project/skeleton"
-_projects_dir="/space/projects"
+skeleton_dir="/space/admin/generate-project/skeleton"
+projects_dir="/space/projects"
 
 function quit {
   if [[ -n $1 ]]; then 
@@ -20,42 +20,52 @@ if [[ -z $1 ]]; then
 fi
 
 # Replace `.` by `-` in project name
-_project_name=`echo $1 | sed 's/\./-/g'`
-_project_host=$1.`hostname -f`
+project_name=`echo $1 | sed 's/\./-/g'`
+project_hostname=`hostname`
+project_domain=`hostname -d`
+git_hostname=`hostname`
 
-_project_dir="${_projects_dir}/${_project_name}"
+project_dir="${projects_dir}/${project_name}"
 # We check if the project folder does not exist already
-if [[ -d $_project_dir ]]; then 
-  quit "Directory $_project_path exists" 0
+if [[ -d $project_dir ]]; then 
+  quit "Directory $project_path exists" 0
 fi
 
 # skeleton
-cp -r --preserve=mode,ownership $_skeleton_dir/ $_project_dir
+cp -r --preserve=mode,ownership $skeleton_dir/ $project_dir
 
-mkdir $_project_dir/git-temp
-cd $_project_dir/git-temp
+mkdir $project_dir/git-temp
+cd $project_dir/git-temp
 git init
 mkdir htdocs
-echo $_project_name at $_project_host generated > htdocs/README
+echo $project_name at $project_hostname generated > htdocs/README
+echo ._* > .gitignore
+echo .DS_Store >> .gitignore
+echo \._*\.php >> .gitignore
+
 
 git add *
 git commit -m "project creation"
-cd $_project_dir
-git clone --bare git-temp/.git ${_project_name}.git
-rm -rf $_project_dir/git-temp
+cd $project_dir
+git clone --bare git-temp/.git ${project_name}.git
+rm -rf $project_dir/git-temp
 
 # Capistrano config
-_deploy_rb="${_project_dir}/capistrano/config/deploy.rb"
-sed -e "s/\[PROJECT_NAME\]/${_project_name}/g" -e "s/\[PROJECT_HOST\]/${_project_host}/g" -e "s#\[PROJECTS_DIR\]#${_projects_dir}#g" < $_deploy_rb > ${_deploy_rb}.new
-rm $_deploy_rb
-mv ${_deploy_rb}.new $_deploy_rb
+deploy_rb="${project_dir}/capistrano/config/deploy.rb"
+sed -e "s/\[PROJECT_NAME\]/${project_name}/g" \
+    -e "s/\[PROJECT_HOSTNAME\]/${project_hostname}/g"\
+    -e "s/\[PROJECT_DOMAIN\]/${project_domain}/g"\
+    -e "s/\[GIT_HOSTNAME\]/${git_hostname}/g"\
+    -e "s#\[PROJECTS_DIR\]#${projects_dir}#g" < $deploy_rb > ${deploy_rb}.new
+rm $deploy_rb
+mv ${deploy_rb}.new $deploy_rb
 
 
 # Skip first deployment, better to do it manually
 exit
 
 # Capistrano setup
-cd $_project_dir/capistrano
+cd $project_dir/capistrano
 cap deploy:setup
 cap deploy
 
