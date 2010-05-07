@@ -1,7 +1,15 @@
 #!/bin/bash
 
+# 1 - Creation du projet sur gitosis
+#   a - clone de la config gitosis
+#   b - commit + push
+# 2 - Création du projet vide dans /space/project
+#   a - copie du skeleton
+#   b - init du depot
+#   c - commit + push
+
 # Paths
-skeleton_dir="/space/admin/generate-project/skeleton"
+skeleton_dir="/space/admin/generate-project2/skeleton"
 projects_dir="/space/projects"
 
 function quit {
@@ -28,12 +36,37 @@ git_hostname=`hostname`
 project_dir="${projects_dir}/${project_name}"
 # We check if the project folder does not exist already
 if [[ -d $project_dir ]]; then 
-  quit "Directory $project_path exists" 0
+  
+  echo "Directory $project_path exists" 0
 fi
 
-# skeleton
+echo project_name: $project_name
+echo project_hostname: $project_hostname
+echo project_domain: $project_domain
+echo git_hostname: $git_hostname
+echo project_dir: $project_dir
+
+#### GITOSIS CONFIG
+
+# Adding a section to gitosis.conf
+cd /tmp
+git clone gitosis@$git_hostname:gitosis-admin.git
+cd gitosis-admin
+cat << EOF >> gitosis.conf
+[group $project_name]
+gitweb   = yes
+writable = $project_name
+members  = root@dev-dist
+EOF
+git commit -a -m "Adding project $project_name"
+git push
+cd ..
+rm -rf gitosis-admin
+
+# Copy the skeleton
 cp -r --preserve=mode,ownership $skeleton_dir/ $project_dir
 
+# Git init 
 mkdir $project_dir/git-temp
 cd $project_dir/git-temp
 git init
@@ -42,16 +75,16 @@ echo $project_name at $project_hostname generated > htdocs/README
 echo ._* > .gitignore
 echo .DS_Store >> .gitignore
 echo \._*\.php >> .gitignore
-
-
 git add *
-git commit -m "project creation"
-cd $project_dir
-git clone --bare git-temp/.git ${project_name}.git
+git commit -m "Project creation"
+git remote add origin gitosis@$git_hostname:$project_name.git
+git push origin master
 rm -rf $project_dir/git-temp
+
 
 # Capistrano config
 deploy_rb="${project_dir}/capistrano/config/deploy.rb"
+
 sed -e "s/\[PROJECT_NAME\]/${project_name}/g" \
     -e "s/\[PROJECT_HOSTNAME\]/${project_hostname}/g"\
     -e "s/\[PROJECT_DOMAIN\]/${project_domain}/g"\
