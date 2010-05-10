@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# 1 - Creation du projet sur gitosis
-#   a - clone de la config gitosis
-#   b - commit + push
-# 2 - Création du projet vide dans /space/project
-#   a - copie du skeleton
-#   b - init du depot
-#   c - commit + push
-
 # Paths
 skeleton_dir="/space/admin/generate-project2/skeleton"
 projects_dir="/space/projects"
