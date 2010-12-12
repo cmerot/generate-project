@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Paths
-skeleton_dir="/space/admin/generate-project2/skeleton"
+skeleton_dir="/space/admin/generate-project/skeleton"
 projects_dir="/space/projects"
 
 function quit {
