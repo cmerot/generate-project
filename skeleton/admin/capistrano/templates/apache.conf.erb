@@ -1,0 +1,11 @@
+<VirtualHost *>
+  ServerName <%=application%>.<%=project_hostname%>.<%=project_domain%> 
+  DocumentRoot <%= "#{current_path}/htdocs" %> 
+  <Directory <%= "#{current_path}/htdocs" %>>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+  </Directory>
+  LogLevel warn
+  ErrorLog <%= "#{shared_path}/log/apache2/error.log" %> 
+  CustomLog <%= "#{shared_path}/log/apache2/access.log common" %>
+</VirtualHost>

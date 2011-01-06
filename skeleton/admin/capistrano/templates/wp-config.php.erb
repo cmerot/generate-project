@@ -1,0 +1,104 @@
+<?php
+die('here');
+// ** MySQL settings ** 
+//define('WP_CACHE', false); 
+
+//Added by WP-Cache Manager
+define('DB_NAME', '<%=wp_db_name%>');    
+
+// The name of the database
+define('DB_USER', '<%=wp_db_user%>');     
+
+// Your MySQL username
+define('DB_PASSWORD', '<%=wp_db_password%>'); 
+
+// ...and password
+define('DB_HOST', '<%=wp_db_host%>');    
+
+// 99% chance you won't need to change this value
+define('DB_CHARSET', '<%=wp_db_charset%>');
+
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', '');
+define('VHOST', 'no'); 
+$base = '/';
+define('DOMAIN_CURRENT_SITE', '<%=hostname%>' );
+define('PATH_CURRENT_SITE', '/' );
+define('SITE_ID_CURRENT_SITE', 1);
+define('BLOGID_CURRENT_SITE', '1' );
+
+
+/* Uncomment to allow blog admins to edit their users. See http://trac.mu.wordpress.org/ticket/1169 */
+//define( "EDIT_ANY_USER", true );
+/* Uncomment to enable post by email options. See http://trac.mu.wordpress.org/ticket/1084 */
+//define( "POST_BY_EMAIL", true );
+
+/**#@+
+ * Authentication Unique Keys.
+ *
+ * Change these to different unique phrases!
+ * You can generate these using the {@link http://api.wordpress.org/secret-key/1.1/wpmu/salt WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define('AUTH_KEY', 'd18e8a877b246540d7230d26a34d3c520e53a43d6c62bc9e499e62fb56a01823');
+define('SECURE_AUTH_KEY', '393ce316dd642acd11280c9511c23520e9cf376d6813c8fd3d95b4c51a6143f1');
+define('LOGGED_IN_KEY', '08777fabd4b34dbceec2e82a05191247c8843dbe1d931cc844542b01af14307b');
+define('NONCE_KEY', 'a3dc30af491dc5b3a4ff32bbe094b20b8c928002d9461ddadbbcf5eeb1b37fb8');
+define('AUTH_SALT', '8435c6c391a23883c798859d28c19d95e0eda9a3645cb08ae2e07cc8ee085e0a');
+define('LOGGED_IN_SALT', 'bf527054b76675c80669316adbf0b4d3ac12bf2d878ee8d2ac9e73fa6597bdf3');
+define('SECURE_AUTH_SALT', '6df72b52415ceeee50bb9d29dad4a18d67bfe64315ed2b38c38295adecc72eb6');
+/**#@-*/
+
+/**
+ * WordPress Database Table prefix.
+ *
+ * You can have multiple installations in one database if you give each a unique
+ * prefix. Only numbers, letters, and underscores please!
+ */
+$table_prefix  = 'wp_';
+
+/**
+ * WordPress Localized Language, defaults to English.
+ *
+ * Change this to localize WordPress.  A corresponding MO file for the chosen
+ * language must be installed to wp-content/languages. For example, install
+ * de.mo to wp-content/languages and set WPLANG to 'de' to enable German
+ * language support.
+ */
+define ('WPLANG', '');
+
+// double check $base
+if( $base == 'BASE' )
+	die( 'Problem in wp-config.php - $base is set to BASE when it should be the path like "/" or "/blogs/"! Please fix it!' );
+
+// uncomment this to enable WP_CONTENT_DIR/sunrise.php support
+//define( 'SUNRISE', 'on' );
+
+// uncomment to move wp-content/blogs.dir to another relative path
+// remember to change WP_CONTENT too.
+// define( "UPLOADBLOGSDIR", "fileserver" );
+
+// If VHOST is 'yes' uncomment and set this to a URL to redirect if a blog does not exist or is a 404 on the main blog. (Useful if signup is disabled)
+// For example, the browser will redirect to http://examples.com/ for the following: define( 'NOBLOGREDIRECT', 'http://example.com/' );
+// Set this value to %siteurl% to redirect to the root of the site
+// define( 'NOBLOGREDIRECT', '' );
+// On a directory based install you must use the theme 404 handler.
+
+// Location of mu-plugins
+// define( 'WPMU_PLUGIN_DIR', '' );
+// define( 'WPMU_PLUGIN_URL', '' );
+// define( 'MUPLUGINDIR', 'wp-content/mu-plugins' );
+
+define( "WP_USE_MULTIPLE_DB", false );
+
+/* That's all, stop editing! Happy blogging. */
+
+/** Absolute path to the WordPress directory. */
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(__FILE__) . '/');
+
+/** Sets up WordPress vars and included files. */
+require_once(ABSPATH . 'wp-settings.php');
+define('ABSPATH', '<%="#{current_path}/public/"%>');
